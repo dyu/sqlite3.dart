@@ -5,7 +5,7 @@ homepage: https://github.com/simolus3/sqlite3.dart/tree/main/sqlite3
 issue_tracker: https://github.com/simolus3/sqlite3.dart/issues
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=2.12.0 <4.0.0'
 
 # This package supports all platforms listed below.
 platforms:
@@ -29,10 +29,10 @@ dependencies:
   path: ^1.8.0
 
 dev_dependencies:
-  build_daemon: ^4.0.0
-  build_runner: ^2.1.7
-  build_web_compilers: ^4.0.3
-  ffigen: ^8.0.1
+  build_daemon: ^3.1.1
+  build_runner: 2.3.3
+  build_web_compilers: ^3.2.7
+  ffigen: ^7.2.11
   http: ^0.13.4
   lints: ^2.0.1
   shelf: ^1.4.0
