@@ -8,7 +8,36 @@ with an unmodified `sqlite3` package.
 
 ## Using this package
 
-Depending on your platform, a bit of setup work and precautions are necessary:
+Depending on your platform, a bit of setup work and precautions are necessary.
+In particular, __please be aware of the [compatibility concerns on iOS and macOS](#incompatibilities-with-sqlite3-on-ios-and-macos)!
+Also, a special code snippet is [necessary on Android](#compilation).
+
+Apart from that, this package works well with the regular `sqlite3` package. To open an encrypted database,
+use the `sqlite3` package and run a pragma to decrypt it:
+
+```dart
+import 'package:sqlcipher_flutter_libs/sqlcipher_flutter_libs.dart';
+import 'package:sqlite3/open.dart';
+
+import 'package:sqlite3/sqlite3.dart';
+
+void main() {
+  open.overrideFor(OperatingSystem.android, openCipherOnAndroid);
+  final db = sqlite3.open('path/to/your/database/file');
+
+  if (db.select('PRAGMA cipher_version;').isEmpty) {
+    // Make sure that we're actually using SQLCipher, since the pragma used to encrypt
+    // databases just fails silently with regular sqlite3 (meaning that we'd accidentally
+    // use plaintext databases).
+    throw StateError('SQLCipher library is not available, please check your dependencies!');
+  }
+
+  // Set the encryption key for the database
+  db.execute("PRAGMA key = 'your passphrase';");
+
+  // From this point on, you can use this encrypted database like any other sqlite3 database.
+}
+```
 
 ### Compilation
 
@@ -65,6 +94,18 @@ that case.
 
 Alternatively, you can prevent other pods from linking sqlite3 by adding [this snippet](https://github.com/simolus3/drift/issues/1810#issuecomment-1119426006)
 to your podfile.
+
+## Different behavior on different platforms
+
+On Android, iOS and macOS, this package relies on dependencies managed by Zetetic (the authors of SQLCipher)
+to include SQLCipher in your application.
+As no such solutions exist for Windows and Linux, a custom build script is used there.
+This build script is inspired from the one used in `sqlite3_flutter_libs` and disables the [double-quoted strings](https://sqlite.org/quirks.html#double_quoted_string_literals_are_accepted)
+misfeature.
+The official SQLCipher builds don't do that.
+
+To avoid your app relying on double-quoted strings in SQL, you should test your app on Linux or Windows before release if you
+target these platforms.
 
 ## Problems on Android 6
 
