@@ -24,7 +24,7 @@ final OpenDynamicLibrary open = OpenDynamicLibrary._();
 DynamicLibrary _defaultOpen() {
   if (Platform.isAndroid) {
     try {
-      return DynamicLibrary.open('libsqlite3.so');
+      return DynamicLibrary.open('libsqlcipher.so');
       // ignore: avoid_catching_errors
     } on ArgumentError {
       // On some (especially old) Android devices, we somehow can't dlopen
@@ -37,7 +37,7 @@ DynamicLibrary _defaultOpen() {
       final endOfAppId = max(appIdAsBytes.indexOf(0), 0);
       final appId = String.fromCharCodes(appIdAsBytes.sublist(0, endOfAppId));
 
-      return DynamicLibrary.open('/data/data/$appId/lib/libsqlite3.so');
+      return DynamicLibrary.open('/data/data/$appId/lib/libsqlcipher.so');
     }
   } else if (Platform.isLinux) {
     // Recent versions of the `sqlite3_flutter_libs` package bundle sqlite3 with
@@ -49,8 +49,10 @@ DynamicLibrary _defaultOpen() {
     }
 
     // Fall-back to system's libsqlite3 otherwise.
-    return DynamicLibrary.open('libsqlite3.so');
+    return DynamicLibrary.open('libsqlcipher.so');
   } else if (Platform.isIOS) {
+    return return DynamicLibrary.process();
+    /*
     try {
       return DynamicLibrary.open('sqlite3.framework/sqlite3');
       // Ignoring the error because its the only way to know if it was sucessful
@@ -63,7 +65,10 @@ DynamicLibrary _defaultOpen() {
       // When using sqlcipher_flutter_libs this falls back to the version provided by the SQLCipher pod.
       return DynamicLibrary.process();
     }
+    */
   } else if (Platform.isMacOS) {
+    return return DynamicLibrary.process();
+    /*
     DynamicLibrary result;
 
     // First, try to load embed library with Pod
@@ -77,8 +82,9 @@ DynamicLibrary _defaultOpen() {
       result = DynamicLibrary.open('/usr/lib/libsqlite3.dylib');
     }
     return result;
+    */
   } else if (Platform.isWindows) {
-    return DynamicLibrary.open('sqlite3.dll');
+    return DynamicLibrary.open('sqlcipher.dll');
   }
 
   throw UnsupportedError('Unsupported platform: ${Platform.operatingSystem}');
