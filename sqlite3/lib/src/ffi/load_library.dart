@@ -51,7 +51,7 @@ DynamicLibrary _defaultOpen() {
     // Fall-back to system's libsqlite3 otherwise.
     return DynamicLibrary.open('libsqlcipher.so');
   } else if (Platform.isIOS) {
-    return return DynamicLibrary.process();
+    return DynamicLibrary.process();
     /*
     try {
       return DynamicLibrary.open('sqlite3.framework/sqlite3');
@@ -67,7 +67,7 @@ DynamicLibrary _defaultOpen() {
     }
     */
   } else if (Platform.isMacOS) {
-    return return DynamicLibrary.process();
+    return DynamicLibrary.process();
     /*
     DynamicLibrary result;
 
