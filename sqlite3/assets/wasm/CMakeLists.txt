@@ -10,14 +10,14 @@ if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
   FetchContent_Declare(
     sqlite3
     # NOTE: When changing this, also update `test/wasm/sqlite3_test.dart`
-    URL https://sqlite.org/2023/sqlite-autoconf-3440200.tar.gz
+    URL https://github.com/utelle/SQLite3MultipleCiphers/releases/download/v1.8.1/sqlite3mc-1.8.1-sqlite-3.44.2-amalgamation.zip
     DOWNLOAD_EXTRACT_TIMESTAMP NEW
   )
 else()
   FetchContent_Declare(
     sqlite3
     # NOTE: When changing this, also update `test/wasm/sqlite3_test.dart`
-    URL https://sqlite.org/2023/sqlite-autoconf-3440200.tar.gz
+    URL https://github.com/utelle/SQLite3MultipleCiphers/releases/download/v1.8.1/sqlite3mc-1.8.1-sqlite-3.44.2-amalgamation.zip
   )
 endif()
 
@@ -27,7 +27,7 @@ set(wasm_visibility "__attribute__((visibility(\"default\")))")
 
 macro(base_sqlite3_target name)
     add_executable(${name}
-        "${sqlite3_SOURCE_DIR}/sqlite3.c"
+        "${sqlite3_SOURCE_DIR}/sqlite3mc_amalgamation.c"
         os_web.c
         helpers.c
     )

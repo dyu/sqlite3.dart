@@ -159,6 +159,8 @@ static int dartvfs_currentTimeInt64(sqlite3_vfs *vfs, sqlite3_int64 *timeOut) {
   return SQLITE_OK;
 }
 
+int sqlite3mc_vfs_create(const char *name, int makeDefault);
+
 SQLITE_API sqlite3_vfs *dart_sqlite3_register_vfs(const char *name, int dartId,
                                                   int makeDefault) {
   sqlite3_vfs *vfs = calloc(1, sizeof(sqlite3_vfs));
@@ -174,9 +176,23 @@ SQLITE_API sqlite3_vfs *dart_sqlite3_register_vfs(const char *name, int dartId,
   vfs->xRandomness = &dartvfs_randomness;
   vfs->xSleep = &dartvfs_sleep;
   vfs->xCurrentTimeInt64 = &dartvfs_currentTimeInt64;
+  
+  // this lookup/init is necessary for sqlite3mc
+  // since os_web.c does not provide/init a default vfs.
+  sqlite3_vfs *dvfs = sqlite3_vfs_find(0);
+  if (dvfs && makeDefault) {
+    dartLogError("Old default:");
+    dartLogError(dvfs->zName);
+    dartLogError("New default:");
+    dartLogError(name);
+  }
 
 #ifdef SQLITE_ENABLE_VFSTRACE
-  sqlite3_vfs_register(vfs, 0);
+  if (SQLITE_OK != sqlite3_vfs_register(vfs, 0)) {
+    dartLogError("FAILED sqlite3_vfs_register:");
+    dartLogError(name);
+    return vfs;
+  }
 
   static const char *prefix = "trace_";
   static const int prefixLength = 6;
@@ -184,11 +200,24 @@ SQLITE_API sqlite3_vfs *dart_sqlite3_register_vfs(const char *name, int dartId,
   strcpy(traceName, prefix);
   strcpy(&traceName[prefixLength], name);
 
-  vfstrace_register(traceName, name, &dartvfs_trace_log1, NULL, makeDefault);
+  if (SQLITE_OK != vfstrace_register(traceName, name, &dartvfs_trace_log1, NULL, makeDefault)) {
+    dartLogError("FAILED vfstrace_register:");
+    dartLogError(name);
+    return vfs;
+  }
 #else
   // Just register the VFS as is.
-  sqlite3_vfs_register(vfs, makeDefault);
+  if (SQLITE_OK != sqlite3_vfs_register(vfs, makeDefault)) {
+    dartLogError("FAILED sqlite3_vfs_register:");
+    dartLogError(name);
+    return vfs;
+  }
 #endif
+  if (SQLITE_OK != sqlite3mc_vfs_create(name, makeDefault)) {
+    dartLogError("FAILED sqlite3mc_vfs_create:");
+    dartLogError(name);
+  }
+  
   return vfs;
 }
 
