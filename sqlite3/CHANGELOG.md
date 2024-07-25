@@ -1,3 +1,13 @@
+<<<<<<< HEAD
+=======
+## 2.4.3+1
+
+- Fix a bug in the OPFS-locks implementation causing a deadlock when the `xSleep`
+  VFS call is issued.
+
+- (skipped by sticking to 3.3.x) Add a temporary workaround for [a Dart bug](https://github.com/dart-lang/sdk/issues/56064)
+  causing spurious exceptions when databases are closed and a debugger is attached.
+
 ## 2.4.3
 
 - Migrate away from legacy web APIs: `dart:html`, `dart:js`, `dart:indexeddb`
