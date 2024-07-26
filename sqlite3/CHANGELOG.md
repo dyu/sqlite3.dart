@@ -1,6 +1,7 @@
-<<<<<<< HEAD
-=======
 ## 2.4.3+1
+
+- Fix selecting large integers (being represented as a `BigInt` in Dart)
+  not working when compiled with dartdevc.
 
 - Fix a bug in the OPFS-locks implementation causing a deadlock when the `xSleep`
   VFS call is issued.
