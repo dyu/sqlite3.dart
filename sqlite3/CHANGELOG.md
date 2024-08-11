@@ -1,5 +1,7 @@
 ## 2.4.3+1
 
+- WebAssembly: Call `_initialize` function of sqlite3 module if one is present.
+
 - Fix selecting large integers (being represented as a `BigInt` in Dart)
   not working when compiled with dartdevc.
 
