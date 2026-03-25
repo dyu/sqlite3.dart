@@ -41,7 +41,7 @@ SQLITE_DIR="$PWD"
 LIBS_DIR="$SQLITE_DIR/.libs"
 cd $SCRIPT_DIR/..
 
-OUT_DIR='sqlite/out'
+OUT_DIR='target/sqlite'
 mkdir -p $OUT_DIR
 
 LIB_PREFIX=''

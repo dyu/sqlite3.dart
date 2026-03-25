@@ -24,6 +24,6 @@ SQLITE_DIR=`ls -d */`
 
 cd $SCRIPT_DIR/..
 
-LD_LIBRARY_PATH=$PWD/sqlite/out \
+LD_LIBRARY_PATH=$PWD/target/sqlite \
 C_INCLUDE_PATH=$PWD/scripts/target/$SQLITE_DIR \
 dart3 test $@
