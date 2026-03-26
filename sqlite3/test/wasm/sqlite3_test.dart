@@ -124,9 +124,9 @@ void main() {
                   'on this platform with a simple `dart test` setup.'
               : null,
           onPlatform: {
-            if (backend == 'opfs')
-              'chrome || edge':
-                  Skip('todo: Always times out in GitHub actions'),
+            // if (backend == 'opfs')
+            //   'chrome || edge':
+            //       Skip('todo: Always times out in GitHub actions'),
             if (backend == 'opfs')
               'firefox': Skip('todo: Currently broken in firefox'),
           },
