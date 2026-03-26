@@ -74,6 +74,7 @@ copy_bins
 
 [ -e .dart_tool/sqlite3_build ] || CC=/opt/llvm/bin/clang CXX=/opt/llvm/bin/clang++ cmake \
 -Dclang=/opt/llvm/bin/clang \
+-Dwasi_sysroot=/opt/wasi-sysroot \
 -S assets/wasm -B .dart_tool/sqlite3_build
 
 cmake --build .dart_tool/sqlite3_build/ -t output -j
