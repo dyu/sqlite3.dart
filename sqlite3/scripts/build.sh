@@ -35,12 +35,12 @@ cd $GZ_DIR
 [ -e Makefile ] || ./configure
 make
 
-[ "$COPY" = '1' ] || exit 0
-
 SQLITE_DIR="$PWD"
 LIBS_DIR="$SQLITE_DIR/.libs"
 cd $SCRIPT_DIR/..
 
+copy_bins() {
+  
 OUT_DIR='target/sqlite'
 mkdir -p $OUT_DIR
 
@@ -67,3 +67,13 @@ esac
 cp "$LIBS_DIR/${LIB_PREFIX}sqlite3.$LIB_SUFFIX" $OUT_DIR/
 echo "Copied files to $OUT_DIR/"
 du -sh $OUT_DIR/*
+
+}
+
+copy_bins
+
+[ -e .dart_tool/sqlite3_build ] || CC=/opt/llvm/bin/clang CXX=/opt/llvm/bin/clang++ cmake \
+-Dclang=/opt/llvm/bin/clang \
+-S assets/wasm -B .dart_tool/sqlite3_build
+
+cmake --build .dart_tool/sqlite3_build/ -t output -j
