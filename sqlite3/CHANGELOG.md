@@ -1,5 +1,8 @@
 ## 2.4.3+1
 
+- Allow registering custom virtual file systems on all platforms. Previously,
+  this was only supported on the web.
+
 - Web: Improve performance of in-memory and IndexedDB file system implementations.
 
 - WebAssembly: Call `_initialize` function of sqlite3 module if one is present.
