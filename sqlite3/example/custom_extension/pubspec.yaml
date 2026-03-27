@@ -3,7 +3,7 @@ description: Custom SQLite extension (uuid.c) loaded in sqlite3
 version: 0.0.1
 
 environment:
-  sdk: ^3.5.0
+  sdk: ^3.3.4
   flutter: '>=3.3.0'
 
 dependencies:
